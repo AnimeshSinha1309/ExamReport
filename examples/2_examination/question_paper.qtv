@@ -1,0 +1,15 @@
+\begin{preamble}
+    \format{school_exam_papers}
+    \type{school_exam_paper}
+    \style{st_thomas_school}
+    \template{st_thomas_school_science}
+\end{preamble}
+
+\begin{fill_in}
+    \q There are \blank{63360} many inches in a mile.
+    \q Rabbits love to eat \blank{Carrots}.
+\end{fill_in}
+
+\begin{name_these}
+    \q \count{5} green vegetables.
+\end{name_these}

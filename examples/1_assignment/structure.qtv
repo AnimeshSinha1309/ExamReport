@@ -1,0 +1,17 @@
+.
++-- _config.md
++-- code
+|   +-- solution.py
+|   +-- sample.py
+|   +-- testgen.cpp
+|   +-- get_data.py (no-submit) (distribution)
++-- outputs
+|   +-- solution.txt
+|   +-- test.txt (generatable) (no-submit)
+|   +-- manual
+|   |   +-- test01.txt (no-submit)
+|   |   +-- test02.txt
+|   |   +-- test03.txt
+|   |   +-- test_self.txt
++-- _submission.md
++-- Assignment.pdf (no-submit)

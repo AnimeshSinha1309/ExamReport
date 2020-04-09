@@ -1,0 +1,31 @@
+\begin{question}[name: Rabbit Home Market]
+
+    \begin{legend}
+        Your friend, the bunny rabbit was out in the street, playing in the feilds, when he saw a lot of Houses and decided that he too wants to buy one. He does not have a lot of money, so he needs to be the first one to get to a good value-for-money house and buy it fast. You, as his friend are there to help.
+    \end{legend}
+
+    \begin{task}
+        Given the length, breadth, and height of the house, you need to make a program that predicts the cost of the house. You shall be given training data for many houses. You are guarenteed that the cost is a polynomial function of the dimensions of the house. You are also required to generate such a dataset with some noise on which your model performs well, but others will perform poorly. 
+        
+        You are also expected to perform near perfectly on the training set that you generate, and well on other training sets.
+    \end{task}
+
+    \begin{format}
+        A call to `get_data.cost_of(dataset, length, breadth, height)` will return a integer value in the range (-100000, +100000). You can also call `get_data.dump(dataset_id)` with a id from 0 to 5 to get a dump in a CSV file. Your testgen script only needs to generate the values as a CSV dump on running.
+    \end{format}
+
+    \begin{constraints}
+        The length, breadth and height must be in the range (-1000, +1000). The cost will be in range (-100000, +100000). 
+    \end{constraints}
+
+    \begin{subtasks}
+        \begin{subtask}[marks: 40]
+            Get the cost of all houses correct upto atmost 100 dollars.
+        \end{subtask}
+        \begin{subtask}[marks: 30]
+        \end{subtask}
+        \begin{subtask}[marks: 30]
+        \end{subtask}
+    \end{subtasks}
+
+\end{question}
