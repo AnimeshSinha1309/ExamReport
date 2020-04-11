@@ -11,7 +11,7 @@ add_executable(ExamReport
         src/structure/ParsedDirectoryStructure.cpp
         src/exceptions/DocumentStructureException.hpp
         src/exceptions/DocumentStructureException.cpp
-        )
+        src/utilities/termcolor.h)
 
 target_link_libraries(ExamReport
         crypto ssl)

@@ -2,10 +2,10 @@
 
 #include "ParsedDirectoryStructure.hpp"
 #include "../exceptions/DocumentStructureException.hpp"
+#include "../utilities/termcolor.h"
 
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <openssl/md5.h>
 #include <iomanip>
 
@@ -59,6 +59,11 @@ namespace qtv {
             previous_depth = depth;
             // Phase 3, get the options right
             while (s >> symbol) {
+                if (symbol == "(dist)") {
+                    incoming->distribution = true;
+                } else if (symbol == "(no-submit)") {
+                    incoming->submit = false;
+                }
             }
         }
         file.close();
@@ -71,36 +76,45 @@ namespace qtv {
         } else {
             cout << ". ";
         }
-        cout << this->name << " (" << this->md5sum << ")" << endl;
+        if (!exists && submit) cout << termcolor::red << this->name << termcolor::reset;
+        else if (this->submit) cout << termcolor::green << this->name << termcolor::reset;
+        else cout << this->name;
+        cout << " (" << this->md5sum << ")";
+        if (!this->submit) cout << " (no-submit)";
+        if (this->distribution) cout << " (dist)";
+        cout << endl;
         for (auto child : this->files) child->print(depth + 1);
     }
 
-    string ParsedDirectoryStructure::hash(string root) {
+    string ParsedDirectoryStructure::validate(string root) {
         if (this->parent != nullptr)
             root = root + "/" + name;
-        for (ParsedDirectoryStructure *file : this->files) {
-            file->hash(root);
-        }
 
+        MD5_CTX md5Context;
+        MD5_Init(&md5Context);
         if (this->files.empty()) {
             ifstream file(root);
-            MD5_CTX md5Context;
-            MD5_Init(&md5Context);
             char buf[1024 * 16];
+            if (file.is_open()) this->exists = true;
             while (file.good()) {
                 file.read(buf, sizeof(buf));
                 MD5_Update(&md5Context, buf, file.gcount());
             }
-            unsigned char result[MD5_DIGEST_LENGTH];
-            MD5_Final(result, &md5Context);
-            std::stringstream md5string;
-            md5string << std::hex << std::uppercase << std::setfill('0');
-            for (const auto &byte: result)
-                md5string << std::setw(2) << (int) byte;
-            this->md5sum = md5string.str();
         } else {
-            this->md5sum = "DIRECTORY";
+            this->exists = true;
+            for (ParsedDirectoryStructure *file : this->files) {
+                string subHash = file->validate(root);
+                MD5_Update(&md5Context, subHash.c_str(), subHash.size());
+                this->exists = this->exists && file->exists;
+            }
         }
+        unsigned char result[MD5_DIGEST_LENGTH];
+        MD5_Final(result, &md5Context);
+        std::stringstream md5string;
+        md5string << std::hex << std::uppercase << std::setfill('0');
+        for (const auto &byte: result)
+            md5string << std::setw(2) << (int) byte;
+        this->md5sum = md5string.str();
         return this->md5sum;
     }
 

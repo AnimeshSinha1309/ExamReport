@@ -18,6 +18,7 @@ namespace qtv {
 
         bool submit = true;
         bool distribution = false;
+        bool exists = false;
 
         string md5sum = "";
 
@@ -47,7 +48,7 @@ namespace qtv {
          * @param: string root - The root file path of the subdirectory to hash
          * @returns: string hash - The MD5 hash of the subdirectory
          */
-        string hash(string root);
+        string validate(string root);
 
         /**
          * Prints the File Structure tree that is loading in the current object

@@ -7,6 +7,6 @@ using namespace qtv;
 int main() {
     ParsedDirectoryStructure tree("Assignment 1", nullptr);
     tree.load("../examples/1_assignment/structure.qtv");
-    tree.hash("../examples/1_solution");
+    tree.validate("../examples/1_solution");
     tree.print();
 }
