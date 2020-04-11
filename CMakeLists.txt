@@ -7,8 +7,11 @@ include_directories(src/structure)
 
 add_executable(ExamReport
         src/structure/main.cpp
-        src/structure/parse.cpp
-        src/structure/parse.hpp
-        src/exceptions/DocumentStructureException.h
+        src/structure/ParsedDirectoryStructure.hpp
+        src/structure/ParsedDirectoryStructure.cpp
+        src/exceptions/DocumentStructureException.hpp
         src/exceptions/DocumentStructureException.cpp
         )
+
+target_link_libraries(ExamReport
+        crypto ssl)

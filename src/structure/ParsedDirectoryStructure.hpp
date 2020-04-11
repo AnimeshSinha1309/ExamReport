@@ -1,8 +1,6 @@
 #ifndef EXAMREPORT_PARSED_DIRECTORY_STRUCTURE_H
 #define EXAMREPORT_PARSED_DIRECTORY_STRUCTURE_H
 
-#include <openssl/md5.h>
-
 #include <string>
 #include <vector>
 
@@ -20,6 +18,8 @@ namespace qtv {
 
         bool submit = true;
         bool distribution = false;
+
+        string md5sum = "";
 
         /**
          * Loads the directory information from the provided source filename and
@@ -42,9 +42,18 @@ namespace qtv {
         void load(const string &filename);
 
         /**
-         * Prints the File Structure tree that is loading in the current object
+         * Generates the MD5 sum of the entire tree, and returns the net MD5 sum
+         * of the full directory.
+         * @param: string root - The root file path of the subdirectory to hash
+         * @returns: string hash - The MD5 hash of the subdirectory
          */
-        void print(int depth);
+        string hash(string root);
+
+        /**
+         * Prints the File Structure tree that is loading in the current object
+         * @param: int depth - nesting depth of the current file
+         */
+        void print(int depth = 0);
     };
 
 };  // namespace qtv

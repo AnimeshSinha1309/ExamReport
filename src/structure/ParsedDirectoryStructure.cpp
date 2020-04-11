@@ -1,11 +1,13 @@
 #include <utility>
 
-#include "parse.hpp"
-#include "../exceptions/DocumentStructureException.h"
+#include "ParsedDirectoryStructure.hpp"
+#include "../exceptions/DocumentStructureException.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <openssl/md5.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -56,9 +58,10 @@ namespace qtv {
             current = incoming;
             previous_depth = depth;
             // Phase 3, get the options right
-            while (s >> symbol) { ;
+            while (s >> symbol) {
             }
         }
+        file.close();
     }
 
     void ParsedDirectoryStructure::print(int depth) {
@@ -68,8 +71,37 @@ namespace qtv {
         } else {
             cout << ". ";
         }
-        cout << this->name << endl;
+        cout << this->name << " (" << this->md5sum << ")" << endl;
         for (auto child : this->files) child->print(depth + 1);
+    }
+
+    string ParsedDirectoryStructure::hash(string root) {
+        if (this->parent != nullptr)
+            root = root + "/" + name;
+        for (ParsedDirectoryStructure *file : this->files) {
+            file->hash(root);
+        }
+
+        if (this->files.empty()) {
+            ifstream file(root);
+            MD5_CTX md5Context;
+            MD5_Init(&md5Context);
+            char buf[1024 * 16];
+            while (file.good()) {
+                file.read(buf, sizeof(buf));
+                MD5_Update(&md5Context, buf, file.gcount());
+            }
+            unsigned char result[MD5_DIGEST_LENGTH];
+            MD5_Final(result, &md5Context);
+            std::stringstream md5string;
+            md5string << std::hex << std::uppercase << std::setfill('0');
+            for (const auto &byte: result)
+                md5string << std::setw(2) << (int) byte;
+            this->md5sum = md5string.str();
+        } else {
+            this->md5sum = "DIRECTORY";
+        }
+        return this->md5sum;
     }
 
 };  // namespace qtv
