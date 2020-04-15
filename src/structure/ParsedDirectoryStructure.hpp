@@ -9,18 +9,19 @@ using namespace std;
 namespace qtv {
 
     class ParsedDirectoryStructure {
+    private:
         ParsedDirectoryStructure *parent;
-
-    public:
-        string name;
         vector<ParsedDirectoryStructure *> files;
-        int nesting_depth;
 
         bool submit = true;
         bool distribution = false;
         bool exists = false;
 
+        string path = "";
         string md5sum = "";
+
+    public:
+        string name;
 
         /**
          * Loads the directory information from the provided source filename and
@@ -48,7 +49,16 @@ namespace qtv {
          * @param: string root - The root file path of the subdirectory to hash
          * @returns: string hash - The MD5 hash of the subdirectory
          */
-        string validate(string root);
+        string validate();
+
+        /**
+         * Generates the list of all files in a directory, allows selection of
+         * which files need to be included.
+         * @param: string submittable - Selects files that need to be submitted
+         *         only if set to true, removes this constraint if false
+         * @returns: string files - A string listing out all files
+         */
+        string enlist(bool submittable_only = false);
 
         /**
          * Prints the File Structure tree that is loading in the current object

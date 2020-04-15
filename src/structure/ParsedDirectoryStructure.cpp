@@ -14,10 +14,15 @@ using namespace std;
 namespace qtv {
 
     ParsedDirectoryStructure::ParsedDirectoryStructure(string n,
-                                                       ParsedDirectoryStructure *p)
+                                                       ParsedDirectoryStructure *p = nullptr)
             : name(std::move(n)), parent(p) {
         files = vector<ParsedDirectoryStructure *>(0);
         files.reserve(4);
+        if (p != nullptr) {
+            path = p->path + "/" + name;
+        } else {
+            path = ".";
+        }
     }
 
     void ParsedDirectoryStructure::load(const string &filename) {
@@ -86,14 +91,11 @@ namespace qtv {
         for (auto child : this->files) child->print(depth + 1);
     }
 
-    string ParsedDirectoryStructure::validate(string root) {
-        if (this->parent != nullptr)
-            root = root + "/" + name;
-
+    string ParsedDirectoryStructure::validate() {
         MD5_CTX md5Context;
         MD5_Init(&md5Context);
         if (this->files.empty()) {
-            ifstream file(root);
+            ifstream file(path);
             char buf[1024 * 16];
             if (file.is_open()) this->exists = true;
             while (file.good()) {
@@ -103,9 +105,9 @@ namespace qtv {
         } else {
             this->exists = true;
             for (ParsedDirectoryStructure *file : this->files) {
-                string subHash = file->validate(root);
+                string subHash = file->validate();
                 MD5_Update(&md5Context, subHash.c_str(), subHash.size());
-                this->exists = this->exists && file->exists;
+                this->exists = this->exists && (file->exists || !file->submit);
             }
         }
         unsigned char result[MD5_DIGEST_LENGTH];
@@ -116,6 +118,26 @@ namespace qtv {
             md5string << std::setw(2) << (int) byte;
         this->md5sum = md5string.str();
         return this->md5sum;
+    }
+
+    string ParsedDirectoryStructure::enlist(bool submittable_only) {
+        if (submittable_only && !submit) {
+            return "";
+        }
+        if (files.empty()) {
+            if (exists) {
+                return path + " ";
+            } else {
+                cout << "Warning: Submittable file does not exist - " << path << endl;
+                return "";
+            }
+        } else {
+            string result;
+            for (auto child : files) {
+                result += child->enlist(submittable_only);
+            }
+            return result;
+        }
     }
 
 };  // namespace qtv
