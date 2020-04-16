@@ -1,11 +1,13 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.10)
 project(ExamReport)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(src/structure)
+include_directories(src/)
 
-add_executable(ExamReport
+add_compile_options(-Wall -Wextra -Wpedantic)
+
+add_executable(${PROJECT_NAME}
         src/interface/main.cpp
         src/structure/ParsedDirectoryStructure.hpp
         src/structure/ParsedDirectoryStructure.cpp
@@ -19,3 +21,6 @@ add_executable(ExamReport
 
 target_link_libraries(ExamReport
         crypto ssl)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(DIRECTORY examples DESTINATION examples)

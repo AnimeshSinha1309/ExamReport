@@ -67,6 +67,6 @@ namespace qtv {
         void print(int depth = 0);
     };
 
-};  // namespace qtv
+}  // namespace qtv
 
 #endif  // EXAMREPORT_PARSED_DIRECTORY_STRUCTURE_H

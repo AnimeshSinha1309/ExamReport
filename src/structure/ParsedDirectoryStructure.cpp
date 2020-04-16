@@ -15,7 +15,7 @@ namespace qtv {
 
     ParsedDirectoryStructure::ParsedDirectoryStructure(string n,
                                                        ParsedDirectoryStructure *p = nullptr)
-            : name(std::move(n)), parent(p) {
+            : parent(p), name(std::move(n)) {
         files = vector<ParsedDirectoryStructure *>(0);
         files.reserve(4);
         if (p != nullptr) {
@@ -140,4 +140,4 @@ namespace qtv {
         }
     }
 
-};  // namespace qtv
+}  // namespace qtv
