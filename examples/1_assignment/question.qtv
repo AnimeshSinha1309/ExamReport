@@ -14,10 +14,6 @@
         A call to `get_data.cost_of(dataset, length, breadth, height)` will return a integer value in the range (-100000, +100000). You can also call `get_data.dump(dataset_id)` with a id from 0 to 5 to get a dump in a CSV file. Your testgen script only needs to generate the values as a CSV dump on running.
     \end{format}
 
-    \begin{constraints}
-        The length, breadth and height must be in the range (-1000, +1000). The cost will be in range (-100000, +100000). 
-    \end{constraints}
-
     \begin{subtasks}
         \begin{subtask}[marks: 40]
             Get the cost of all houses correct upto atmost 100 dollars.
@@ -27,5 +23,9 @@
         \begin{subtask}[marks: 30]
         \end{subtask}
     \end{subtasks}
+
+    \begin{constraints}
+        The length, breadth and height must be in the range (-1000, +1000). The cost will be in range (-100000, +100000). 
+    \end{constraints}
 
 \end{question}

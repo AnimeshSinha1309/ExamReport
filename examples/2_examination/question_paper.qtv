@@ -5,11 +5,22 @@
     \template{st_thomas_school_science}
 \end{preamble}
 
-\begin{fill_in}
+\begin{fill}
     \q There are \blank{63360} many inches in a mile.
     \q Rabbits love to eat \blank{Carrots}.
-\end{fill_in}
+\end{fill}
 
-\begin{name_these}
+\begin{name}
     \q \count{5} green vegetables.
-\end{name_these}
+\end{name}
+
+\begin{match}
+    \q A for    \a Apple
+    \q B for    \a Ball
+    \q C for    \a Cat
+    \q D for    \a Dog
+    \q E for    \a Elephant
+\end{match}
+
+\begin{answer}
+    \q[words:100]

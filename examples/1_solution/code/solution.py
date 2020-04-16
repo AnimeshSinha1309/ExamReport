@@ -1,2 +1,2 @@
 def get_cost(l, b, h):
-    return 1000
+    return l + b + h
